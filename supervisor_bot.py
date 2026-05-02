@@ -1,4 +1,3 @@
-import sqlite3
 import os
 import sqlite3
 from collections import Counter
@@ -8,8 +7,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 TOKEN = os.environ.get('TOKEN')
 if not TOKEN:
-    raise ValueError("TOKEN غير موجود! تأكد من إضافته في متغيرات البيئة في Render.")  # سنستبدله لاحقًا بمفتاحك
-# ===============================
+    raise ValueError("TOKEN غير موجود! تأكد من إضافته في متغيرات البيئة في Render.")
 
 def setup_db():
     """إنشاء قاعدة البيانات والجدول إذا لم يكونا موجودين"""
@@ -61,10 +59,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "👋 **مرحبًا! أنا بوت المشرف الآلي لمشروع التخرج.**\n\n"
         "🎯 **مهمتي:**\n"
         "• أرسل ملفًا مع تعليق وسأقوم بحفظه تلقائيًا.\n"
-        "• استخدم /انجازات لعرض سجل الفريق.\n"
-        "• استخدم /تقييم لرؤية تسليمات عضو معين.\n"
-        "• استخدم /تذكير لإرسال تنبيه للجميع.\n\n"
-        "📌 مثال: /تقييم محمد",
+        "• استخدم /achievements لعرض سجل الفريق.\n"
+        "• استخدم /evaluate لرؤية تسليمات عضو معين.\n"
+        "• استخدم /remind لإرسال تنبيه للجميع.\n\n"
+        "📌 مثال: /evaluate محمد",
         parse_mode='Markdown'
     )
 
@@ -103,7 +101,7 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def achievements(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """أمر /انجازات - عرض سجل الفريق"""
+    """أمر /achievements - عرض سجل الفريق"""
     data = get_all_submissions()
 
     if not data:
@@ -125,11 +123,11 @@ async def achievements(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg, parse_mode='Markdown')
 
 async def evaluate(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """أمر /تقييم [اسم العضو]"""
+    """أمر /evaluate [اسم العضو]"""
     if not context.args:
         await update.message.reply_text(
             "⚠️ **الرجاء كتابة اسم العضو.**\n"
-            "مثال: `/تقييم محمد`",
+            "مثال: /evaluate محمد",
             parse_mode='Markdown'
         )
         return
@@ -151,7 +149,7 @@ async def evaluate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg, parse_mode='Markdown')
 
 async def remind_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """أمر /تذكير [نص التذكير]"""
+    """أمر /remind [نص التذكير]"""
     reminder_text = ' '.join(context.args) if context.args else "الرجاء تسليم المهام المطلوبة في أقرب وقت."
 
     await update.message.reply_text(
@@ -162,14 +160,14 @@ async def remind_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """أمر /مساعدة"""
+    """أمر /help"""
     await update.message.reply_text(
         "🆘 **قائمة الأوامر المتاحة:**\n\n"
         "/start - بدء البوت\n"
-        "/انجازات - عرض سجل تسليمات الفريق\n"
-        "/تقييم [الاسم] - عرض تسليمات عضو معين\n"
-        "/تذكير [نص] - إرسال تذكير للجميع\n"
-        "/مساعدة - عرض هذه القائمة\n\n"
+        "/achievements - عرض سجل تسليمات الفريق\n"
+        "/evaluate [الاسم] - عرض تسليمات عضو معين\n"
+        "/remind [نص] - إرسال تذكير للجميع\n"
+        "/help - عرض هذه القائمة\n\n"
         "📎 يمكنك أيضًا إرسال ملف مع تعليق، أو إرسال ملاحظة نصية.",
         parse_mode='Markdown'
     )
@@ -186,10 +184,9 @@ def main():
 
     # ربط الأوامر
     app.add_handler(CommandHandler('start', start))
-    app.add_handler(CommandHandler('انجازات', achievements))
-    app.add_handler(CommandHandler('تقييم', evaluate))
-    app.add_handler(CommandHandler('تذكير', remind_all))
-    app.add_handler(CommandHandler('مساعدة', help_command))
+    app.add_handler(CommandHandler('achievements', achievements))
+    app.add_handler(CommandHandler('evaluate', evaluate))
+    app.add_handler(CommandHandler('remind', remind_all))
     app.add_handler(CommandHandler('help', help_command))
 
     # ربط استقبال الملفات
