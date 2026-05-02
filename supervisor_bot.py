@@ -5,7 +5,8 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 # ========== الإعدادات ==========
-TOKEN = 'YOUR_BOT_TOKEN_HERE'  # سنستبدله لاحقًا بمفتاحك
+import os
+TOKEN = os.environ.get('TOKEN')  # سنستبدله لاحقًا بمفتاحك
 # ===============================
 
 def setup_db():
