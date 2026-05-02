@@ -196,7 +196,12 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
 
     print("✅ البوت يعمل الآن...")
-    app.run_polling()
+
+# السماح للبوت بالعمل في المجموعات
+    app.run_polling(
+       allowed_updates=Update.ALL_TYPES,
+       drop_pending_updates=True
+    )
 
 if __name__ == '__main__':
     main()
