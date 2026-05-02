@@ -1,12 +1,14 @@
 import sqlite3
+import os
+import sqlite3
 from collections import Counter
 from datetime import datetime
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-# ========== الإعدادات ==========
-import os
-TOKEN = os.environ.get('TOKEN')  # سنستبدله لاحقًا بمفتاحك
+TOKEN = os.environ.get('TOKEN')
+if not TOKEN:
+    raise ValueError("TOKEN غير موجود! تأكد من إضافته في متغيرات البيئة في Render.")  # سنستبدله لاحقًا بمفتاحك
 # ===============================
 
 def setup_db():
