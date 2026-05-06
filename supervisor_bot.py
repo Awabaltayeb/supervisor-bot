@@ -5,10 +5,7 @@ from datetime import datetime
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = os.environ.get('TOKEN')
-if not TOKEN:
-    raise ValueError("TOKEN غير موجود! تأكد من إضافته في متغيرات البيئة في Render.")
-
+TOKEN = "8766128884:AAE8piczyTQzaQ1K7ugxT69SmEpEKfS1WMI"
 def setup_db():
     """إنشاء قاعدة البيانات والجدول إذا لم يكونا موجودين"""
     conn = sqlite3.connect('project.db')
