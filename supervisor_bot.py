@@ -197,10 +197,10 @@ def main():
 
     print("✅ البوت يعمل الآن...")
 
-# السماح للبوت بالعمل في المجموعات
+    # السماح للبوت بالعمل في المجموعات
     app.run_polling(
-       allowed_updates=Update.ALL_TYPES,
-       drop_pending_updates=True
+        allowed_updates=Update.ALL_TYPES,
+        drop_pending_updates=True
     )
 
 if __name__ == '__main__':
